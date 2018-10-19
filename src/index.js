@@ -1,7 +1,7 @@
 'use strict'
 
 const createHash = require('create-hash')
-const apiFactory = require('x-address-codec')
+const apiFactory = require('./x-address-codec')
 
 const NODE_PUBLIC = 28
 const NODE_PRIVATE = 32

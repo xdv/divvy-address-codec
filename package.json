@@ -6,7 +6,7 @@
   "license": "ISC",
   "dependencies": {
     "create-hash": "^1.1.2",
-    "x-address-codec": "^0.7.2"
+    "base-x": "3.0.4"
   },
   "repository": {
     "type": "git",
