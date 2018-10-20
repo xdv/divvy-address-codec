@@ -12,21 +12,21 @@ const ED25519_SEED = [0x01, 0xE1, 0x4B]
 
 const ALPHABETS = {
   bitcoin: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
-  ripple: 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz',
+  ripple:  'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz',
   tipple: 'RPShNAF39wBUDnEGHJKLM4pQrsT7VWXYZ2bcdeCg65jkm8ofqi1tuvaxyz',
   stellar: 'gsphnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCr65jkm8oFqi1tuvAxyz'
 }
 
 function buildCodecsMap(alphabets, Codec) {
-  var codecs = {};
-  for (var _name in ALPHABETS) {
-    codecs[_name] = new Codec(ALPHABETS[_name]);
-  }if (alphabets !== ALPHABETS) {
-    for (var _name2 in alphabets) {
-      codecs[_name2] = new Codec(alphabets[_name2]);
+  const codecs = {}
+  for (const _name in ALPHABETS) {
+    codecs[_name] = new Codec(ALPHABETS[_name])
+  } if (alphabets !== ALPHABETS) {
+    for (const _name2 in alphabets) {
+      codecs[_name2] = new Codec(alphabets[_name2])
     }
   }
-  return codecs;
+  return codecs
 }
 
 const options = {
@@ -35,10 +35,10 @@ const options = {
   }
 }
 
-var alphabets = ALPHABETS
+const alphabets = ALPHABETS
 
-var codecMethods = {
-  EdSeed: {
+const codecMethods = {
+  EdSeed: { // opts
     expectedLength: 16,
     version: ED25519_SEED
   },
@@ -55,10 +55,10 @@ var codecMethods = {
   K256Seed: {version: FAMILY_SEED, expectedLength: 16}
 }
 
-var defaultAlphabet = 'ripple'
+const defaultAlphabet = 'ripple'
 
-var Codec = codecFactory(options)
-var codecs = buildCodecsMap(alphabets, Codec)
+const Codec = codecFactory(options)
+const codecs = buildCodecsMap(alphabets, Codec)
 
 const api = {
   Codec: Codec,
@@ -73,34 +73,88 @@ const api = {
   }
 }
 
+
+// entropy is a Buffer of size 16
+// type is 'ed25519' or 'secp256k1'
+function encodeSeed(entropy/*: Buffer*/, type/*: string*/)/*: string*/ {
+  if (entropy.length !== 16) {
+    throw new Error('entropy must have length 16')
+  }
+  if (type !== 'ed25519' && type !== 'secp256k1') {
+    throw new Error('type must be ed25519 or secp256k1')
+  }
+  const opts = {
+    expectedLength: 16,
+
+    // for secp256k1, use `FAMILY_SEED`
+    version: type === 'ed25519' ? ED25519_SEED : FAMILY_SEED
+  }
+  return codecs[defaultAlphabet].encode(entropy, opts)
+}
+
+
+
+// encodeSeed
+// decodeSeed
+// encodeAccountID
+// decodeNodePublic
+// const xrpCodec = {
+
+// }
+
+
+//encode*,decode*
+
+// `name`:
+// EdSeed
+// Seed
+// AccountID
+// Address
+// NodePublic
+// NodePrivate
+// K256Seed
+
+// `opts`:
+// codecMethods[name]
 function addVersion(name, opts) {
   function add(operation) {
-    var encode = operation === 'encode';
-    var func = api[operation + name] = function (arg, arg2) {
-      var params = opts;
+
+    const encode = operation === 'encode'
+
+    api[operation + name] = function(arg, arg2) {
+      let params = opts
       if (arg2 && encode) {
+        // set these params for the encoder IF arg2 is set
         params = {
           expectedLength: opts.expectedLength,
+          // `Seed` has multiple versions:
           version: opts.versions[opts.versionTypes.indexOf(arg2)]
-        };
+        }
       }
-      return api[operation](arg, params);
-    };
-    return func;
-  }
-  var decode = add('decode');
-  add('encode');
-  api['isValid' + name] = function (arg) {
-    try {
-      decode(arg);
-    } catch (e) {
-      return false;
+      // for the decoder, it's the unmodified `opts`
+      return api[operation](arg, params)
     }
-    return true;
-  };
+    return api[operation + name]
+  }
+  const decode = add('decode')
+  add('encode')
+  api['isValid' + name] = function(arg) {
+    try {
+      decode(arg)
+    } catch (e) {
+      return false
+    }
+    return true
+  }
 }
-for (var k in codecMethods) {
-  addVersion(k, codecMethods[k]);
+console.log('---------------')
+
+
+
+for (const k in codecMethods) {
+  // console.log(k)
+  addVersion(k, codecMethods[k])
 }
+console.log('---------------')
 
 module.exports = api
