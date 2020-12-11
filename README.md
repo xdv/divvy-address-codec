@@ -1,9 +1,9 @@
-# ripple-address-codec [![NPM](https://img.shields.io/npm/v/ripple-address-codec.svg)](https://npmjs.org/package/ripple-address-codec) [![Build Status](https://img.shields.io/travis/ripple/ripple-address-codec/master.svg)](https://travis-ci.org/ripple/ripple-address-codec) [![codecov.io](http://codecov.io/github/ripple/ripple-address-codec/coverage.svg?branch=master)](http://codecov.io/github/ripple/ripple-address-codec?branch=master)
+# divvy-address-codec [![NPM](https://img.shields.io/npm/v/divvy-address-codec.svg)](https://npmjs.org/package/divvy-address-codec) [![Build Status](https://img.shields.io/travis/xdv/divvy-address-codec/master.svg)](https://travis-ci.org/xdv/divvy-address-codec) [![codecov.io](http://codecov.io/github/divvy/divvy-address-codec/coverage.svg?branch=master)](http://codecov.io/github/divvy/divvy-address-codec?branch=master)
 
 ## API
 
 ```js
-> var api = require('ripple-address-codec');
+> var api = require('divvy-address-codec');
 > api.decodeSeed('sEdTM1uX8pu2do5XvTnutH6HsouMaM2')
 { version: [ 1, 225, 75 ],
   bytes: [ 76, 58, 29, 33, 63, 189, 251, 20, 199, 194, 141, 96, 148, 105, 179, 65 ],
@@ -35,7 +35,7 @@
   114 ]
 ```
 
-## And ?? There's more to the wonderful world then ripple
+## And ?? There's more to the wonderful world then divvy
 
 We give you the kitchen sink.
 
@@ -45,6 +45,10 @@ We give you the kitchen sink.
   codecs:
    { bitcoin:
       { alphabet: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
+        codec: [Object],
+        base: 58 },
+     divvy:
+      { alphabet: 'dpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcreCg65jkm8oFqi1tuvAxyz',
         codec: [Object],
         base: 58 },
      ripple:
@@ -57,6 +61,10 @@ We give you the kitchen sink.
         base: 58 },
      stellar:
       { alphabet: 'gsphnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCr65jkm8oFqi1tuvAxyz',
+        codec: [Object],
+        base: 58 } },
+     payshares:
+      { alphabet: 'xsphnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCr65jkm8oFqi1tuvAgyz',
         codec: [Object],
         base: 58 } },
   decode: [Function: decode],

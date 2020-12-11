@@ -1,7 +1,7 @@
 'use strict'
 
 const createHash = require('create-hash')
-const apiFactory = require('x-address-codec')
+const apiFactory = require('d-address-codec')
 
 const NODE_PUBLIC = 28
 const NODE_PRIVATE = 32
@@ -13,7 +13,7 @@ module.exports = apiFactory({
   sha256: function(bytes) {
     return createHash('sha256').update(new Buffer(bytes)).digest()
   },
-  defaultAlphabet: 'ripple',
+  defaultAlphabet: 'divvy',
   codecMethods: {
     EdSeed: {
       expectedLength: 16,

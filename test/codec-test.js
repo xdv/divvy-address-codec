@@ -13,7 +13,7 @@ function toBytes(hex) {
   return new Buffer(hex, 'hex').toJSON().data
 }
 
-describe('ripple-address-codec', function() {
+describe('divvy-address-codec', function() {
   function makeTest(type, base58, hex) {
     it('can translate between ' + hex + ' and ' + base58, function() {
       const actual = api['encode' + type](toBytes(hex))
